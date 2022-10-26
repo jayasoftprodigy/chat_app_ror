@@ -1,0 +1,21 @@
+<h1>Rooms#index</h1>
+<p>Find me in app/views/rooms/index.html.erb</p>
+
+<% if user_signed_in? %>
+  <%= button_to 'Log Out', destroy_user_session_path, method: :delete %>
+  <table border="1">
+    <tr>
+      <th>Users</th>
+      <th></th>
+    </tr>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= button_to 'Open', rooms_path(receiver_id: user.id), method: :post %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <%= link_to 'Log In', new_user_session_path %>
+  <%= link_to 'Sign Up', new_user_registration_path %>
+<% end %>

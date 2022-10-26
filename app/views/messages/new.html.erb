@@ -1,0 +1,19 @@
+<%= form_for @room.messages.new, url: room_messages_path do |f| %>
+  <%= f.hidden_field :room_id %>
+
+  <p>
+    <%= f.label :body %>
+    <%= f.text_field :body %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+
+<div id="room" data-room-id="<%= @room.id %>">
+  <% @messages.each do |message| %>
+    <strong><%= message.user.email %></strong>
+    <p><%= message.body %></p>
+    <hr>
+  <% end %>
+</div>

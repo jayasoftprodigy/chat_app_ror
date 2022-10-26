@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatapp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_importmap_tags %>
+    <%= action_cable_meta_tag %>
+
+  </head>
+
+  <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    <%= yield %>
+    <script>
+        document.querySelectorAll('form').forEach(function (el) {
+            el.dataset.turbo = false
+        })
+        document.querySelectorAll('a').forEach(function (el) {
+            el.dataset.turbo = false
+        })
+    </script>
+  </body>
+</html>
