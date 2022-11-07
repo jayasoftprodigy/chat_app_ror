@@ -5,16 +5,23 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <%= stylesheet_link_tag "application" %>
     <%= javascript_importmap_tags %>
     <%= action_cable_meta_tag %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <%= render 'layouts/nav' if user_signed_in?%>
+    <% if notice.present? %>
+      <p class="notice alert alert-primary"><%= notice %></p>
+    <% end %>
+    <% if alert.present? %>
+      <p class="alert alert-secondary"><%= alert %></p>
+    <% end %>
     <%= yield %>
     <script>
         document.querySelectorAll('form').forEach(function (el) {
@@ -25,4 +32,24 @@
         })
     </script>
   </body>
+
+  <style>
+    .set-border{
+      border: 1px solid #cdd3da;
+      border-radius: 10px;
+      padding: 36px;
+    }
+    .page-heading{
+      background-color: #0d6efd;
+      background-color: #480867;
+      /*background-image: linear-gradient(260deg, #cfccd5, transparent);*/
+      color: white;
+    }
+    .gradient-btn{
+      /*background-image: linear-gradient(260deg, #cfccd5, transparent);*/
+      border: 0;
+      border-radius: 0px;
+      background-color: #480867;
+    }
+  </style>
 </html>

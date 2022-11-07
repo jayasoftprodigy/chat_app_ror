@@ -1,19 +1,114 @@
-<%= form_for @room.messages.new, url: room_messages_path do |f| %>
-  <%= f.hidden_field :room_id %>
-
-  <p>
-    <%= f.label :body %>
-    <%= f.text_field :body %>
-  </p>
-  <p>
-    <%= f.submit %>
-  </p>
-<% end %>
-
-<div id="room" data-room-id="<%= @room.id %>">
-  <% @messages.each do |message| %>
-    <strong><%= message.user.email %></strong>
-    <p><%= message.body %></p>
-    <hr>
+<div class="container text-center mt-5">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-12 d-inline-block text-start set-border">
+    <h2 class="text-center p-2 page-heading mb-3"><%= @other_user.email %></h2>
+    <div id="room" data-room-id="<%= @room.id %>" data-current-user-id="<%= current_user.id %>" class=" messages-container">
+      <% @messages.each do |message| %>
+        <% class_name = "chat-message-group"
+          class_name += " writer-user" if message.user_id == current_user.id %>
+          <div class='<%= class_name%>'>
+            <div class="chat-messages">
+              <div class="message"><%= message.body %></div>
+              <div class="from"><%= message.created_at %></div>
+            </div>
+          </div>
+      <% end %>
+  </div>
+  <%= form_for @room.messages.new, url: room_messages_path do |f| %>
+    <%= f.hidden_field :room_id %>
+    <div class="input-group mt-3">
+      <%= f.text_field :body, class: "form-control" %>
+      <%= f.submit "Send", class: "btn btn btn-primary gradient-btn submit" %>
+    </div>
   <% end %>
 </div>
+
+
+<style>
+
+.chat-message-group .chat-messages{
+  float: left;
+  width: 80%;
+  margin-bottom: 20px;
+}
+.chat-message-group .message{
+  float: left;
+  padding: 10px;
+  /*background: #ecf1f8;*/
+  background: #828282;
+  font-size: 13px;
+  border-radius: 5px;
+  margin-bottom: 3px;
+  border-radius: 20px 20px 20px 0px;
+  /*background-image: linear-gradient(260deg, #cfccd5, transparent);*/
+  max-width: 400px;
+  color: #FFF;
+  background: #828282;
+}
+.chat-messages .from{
+  float: left;
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 11px;
+}
+
+.writer-user .chat-messages{
+  float: right;
+  width: 100%;
+}
+.writer-user .chat-messages .message{
+  float: right;
+  background: #9600a4;
+  /*background-image: linear-gradient(260deg, #5f5f5f, transparent);*/
+  border-radius: 20px 20px 0px 20px;
+}
+.writer-user .chat-messages .from{
+  float: left;
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+.chat-message-group .typing{
+  float: left;
+}
+
+.messages-container{
+  max-height: calc(100vh - 350px);
+  overflow-y: auto;
+  /*border: 1px solid #cdd3da;*/
+  border-bottom: 0;
+  border-top: 0;
+  padding: 12px;
+}
+#message_body{
+  padding: 10px;
+  border-radius: 0;
+}
+.page-heading{
+  margin: 0;
+}
+
+  @media (max-width: 992px){
+    .set-border {
+      border: 0 !important; 
+      padding: 0 !important; 
+    }
+    .mt-5{
+       margin-top: 1rem !important;
+    }
+    .messages-container{
+      max-height: calc(100vh - 210px);
+    }
+  }
+</style>
+
+
+<script>
+  function scrollDown() {
+    document.getElementById('room').scrollTop =  document.getElementById('room').scrollHeight;
+  }
+
+  window.addEventListener("load", () => {
+    scrollDown();
+  });
+</script>

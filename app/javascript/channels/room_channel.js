@@ -1,5 +1,7 @@
 import consumer from "channels/consumer"
 
+const currentUserId= $('#room').data("current-user-id");
+
 consumer.subscriptions.create({channel: "RoomChannel", room_id: $('#room').data("room-id")}, {
   connected() {
     console.log('connected')
@@ -11,7 +13,13 @@ consumer.subscriptions.create({channel: "RoomChannel", room_id: $('#room').data(
   },
 
   received(data) {
-    console.log(data)
-    $("#room").prepend(data['message'])
+    console.log(data);
+    if (currentUserId != data.current_user_id){
+      data.message = data.message.replace( 'writer-user', '' );
+    }else{
+      $("#message_body").val('');
+    }
+    $("#room").append(data['message']);
+    document.getElementById('room').scrollTop =  document.getElementById('room').scrollHeight;
   }
 });

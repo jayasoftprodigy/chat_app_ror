@@ -1,15 +1,17 @@
 class MessagesController < ApplicationController
 
+  before_action :set_room, only: :new
+  before_action :find_other_user, only: :new
+
   def new
-    @room = Room.find(params[:room_id])
-    @messages = @room.messages.order(created_at: :desc)
+    @messages = @room.messages.order(:created_at)
   end
 
   def create
     @message = current_user.messages.new(message_params)
     @message.save
 
-    ActionCable.server.broadcast("room_channel_#{@message.room_id}", { message: message_body(@message).html_safe, room_id: @message.room_id })
+    ActionCable.server.broadcast("room_channel_#{@message.room_id}", { message: message_body(@message).html_safe, room_id: @message.room_id, current_user_id: current_user.id })
   end
 
   private
@@ -19,8 +21,21 @@ class MessagesController < ApplicationController
   end
 
   def message_body(message)
-    "<strong>#{message.user.email}</strong>\
-    <p>#{message.body}</p>\
-    <hr>"
+    # class_name = "chat-message-group"
+    # class_name += " writer-user" if @message.user_id == current_user.id
+    "<div class='chat-message-group writer-user'>\
+      <div class='chat-messages'>\
+        <div class='message'>#{message.body}</div>\
+        <div class='from'>#{message.created_at}</div>\
+      </div>\
+    </div>"
+  end
+
+  def set_room
+    @room = Room.find(params[:room_id])
+  end
+
+  def find_other_user
+    @other_user = @room.sender == current_user ? @room.receiver : @room.sender
   end
 end
