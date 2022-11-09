@@ -3,7 +3,13 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <div class="account">
+      <% if @current_user.present? %>
+        Logged in as <strong><%= current_user.email %></strong>
+      <% end %>
+    </div>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+      <%= link_to 'Back', rooms_path, class: "btn btn-light mx-2" %>
       <%= button_to 'Log Out', destroy_user_session_path, method: :delete, class: "btn btn-light" %>
     </div>
   </div>
