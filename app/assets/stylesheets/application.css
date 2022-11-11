@@ -14,6 +14,13 @@
  *= require_self
  */
 
- .back-btn{  
-    color: black;
+.back-btn{  
+   color: black;
+}
+.dot {
+   height: 10px;
+   width: 10px;
+   background-color: red;
+   border-radius: 50%;
+   display: inline-block;
  }

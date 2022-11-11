@@ -1,6 +1,7 @@
 class RoomsController < ApplicationController
   def index
-    @users = User.all_except(current_user) if current_user.present?
+    # We will fetch all rooms along with messages to check in view for new message for every user
+    @users = User.all_except(current_user).includes(:rooms, :messages) if current_user.present?
   end
 
   def create

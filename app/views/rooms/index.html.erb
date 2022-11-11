@@ -13,6 +13,13 @@
           <tr>
             <td><%= user.email %></td>
             <td><%= button_to 'Open', rooms_path(receiver_id: user.id), method: :post, class: 'btn btn-primary gradient-btn' %></td>
+            <%# now we will check if a room exists between current_user and loop user. If exists fetch last messages from their chat and check if the last message was sent by the other user. If yes then show notification here. %>
+            <% if user.rooms.find_by(sender_id: current_user.id, receiver_id: user.id) || user.rooms.find_by(sender_id: user.id, receiver_id: current_user.id) %>
+              <% rooom = user.rooms.find_by(sender_id: current_user.id, receiver_id: user.id) || user.rooms.find_by(sender_id: user.id, receiver_id: current_user.id) %>
+              <% if rooom.messages.last.status == false %>
+                <td><span class="dot"></span></td>
+              <% end %>
+            <% end %>
           </tr>
         <% end %>
       </tbody>

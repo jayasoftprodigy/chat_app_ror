@@ -5,6 +5,7 @@ class MessagesController < ApplicationController
 
   def new
     @messages = @room.messages.order(:created_at)
+    @room.messages.last.update(status: true)
   end
 
   def create
@@ -12,6 +13,7 @@ class MessagesController < ApplicationController
     @message.save
 
     ActionCable.server.broadcast("room_channel_#{@message.room_id}", { message: message_body(@message).html_safe, room_id: @message.room_id, current_user_id: current_user.id })
+    # ActionCable.server.broadcast("notify_channel_#{@message.id}", {message_id: message_id(@message), room_id: @message.room_id, current_user_id: current_user.id })
   end
 
   private
