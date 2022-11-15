@@ -15,7 +15,7 @@ class RoomsController < ApplicationController
   private
 
   def check_if_room_exist(receiver_id)
-    Room.where("(sender_id = ? and receiver_id = ?) or (sender_id = ? and receiver_id = ?)",
-               current_user.id, receiver_id, receiver_id, current_user.id).first
+    Room.check_if_room_exist(receiver_id, current_user.id)
+    #Room.where("(sender_id = ? and receiver_id = ?) or (sender_id = ? and receiver_id = ?)", current_user.id, receiver_id, receiver_id, current_user.id).first
   end
 end

@@ -8,6 +8,6 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def speak
-    
   end
+
 end

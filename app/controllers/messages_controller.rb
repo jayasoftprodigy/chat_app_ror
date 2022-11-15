@@ -5,15 +5,18 @@ class MessagesController < ApplicationController
 
   def new
     @messages = @room.messages.order(:created_at)
-    @room.messages.last.update(status: true)
+    # @room.messages.last.update(status: true)
+    @room.get_unread_msg(find_other_user).update_all(status: true)
   end
 
   def create
     @message = current_user.messages.new(message_params)
     @message.save
 
+    @room = Room.find(message_params[:room_id])
+    @unread_count = @room.get_unread_msg(current_user).count
+    ActionCable.server.broadcast("notify_channel_#{find_other_user.id}", {unread_count: @unread_count, current_user_id: current_user.id})
     ActionCable.server.broadcast("room_channel_#{@message.room_id}", { message: message_body(@message).html_safe, room_id: @message.room_id, current_user_id: current_user.id })
-    # ActionCable.server.broadcast("notify_channel_#{@message.id}", {message_id: message_id(@message), room_id: @message.room_id, current_user_id: current_user.id })
   end
 
   private
